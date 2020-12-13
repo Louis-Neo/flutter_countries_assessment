@@ -1,7 +1,12 @@
 import 'package:countries_info/routes.dart';
 import 'package:flutter/material.dart';
 
+import 'locator.dart';
+import 'routeNames.dart';
+import 'services/navigation_service.dart';
+
 void main() {
+  setupLocator();
   runApp(PalotaCountriesAssessmentApp());
 }
 
@@ -15,8 +20,10 @@ class PalotaCountriesAssessmentApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: AppRoutes.startUp,
-      onGenerateRoute: AppRoutes.onGenerateRoute,
+      navigatorKey: locator<NavigationService>().navigationKey,
+      initialRoute: startUp,
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: generateRoute,
     );
   }
 }

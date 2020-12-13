@@ -1,29 +1,45 @@
-import 'package:countries_info/routes.dart';
+import 'package:countries_info/viewmodels/contriesPage_view_model.dart';
+import 'package:countries_info/widgets/country_list_item.dart';
 import 'package:flutter/material.dart';
 
-// TODO: fetch list of countries from API and render
+import '../base_view.dart';
+
 // Feel free to change this to a stateful widget if necessary
 class CountriesPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Countries"),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.info_outline),
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(AppRoutes.about)),
-        ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Text(
-            '''Fetch and show the list of countries.
-Click to navigate to country detail.''',
-            textAlign: TextAlign.center,
-          ),
+    return BaseView<CountriesPageViewModel>(
+      onModelReady: (model) => model.getCountries(),
+      builder: (context, model, child) => Scaffold(
+        backgroundColor: Colors.white.withOpacity(0.85),
+        appBar: AppBar(
+          title: Text("Countries"),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.info_outline),
+                onPressed: () => model.navigateToAboutPage()
+            )
+          ],
+        ),
+        body: model.busy ? Center(
+          child: CircularProgressIndicator(),
+        ) : Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: ListView.builder(
+                itemCount: model.countries.length,
+                itemBuilder: (context, index){
+                  return CountryListItem(
+                    country: model.countries[index],
+                    onTap: () => model.navigateToCountryDetailsPage(model.countries[index])
+                  );
+                },
+              )
+            ),
+            Container()
+          ],
         ),
       ),
     );

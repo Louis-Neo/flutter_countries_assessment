@@ -3,7 +3,53 @@ import 'package:countries_info/views/pages/countries.dart';
 import 'package:countries_info/views/pages/landing.dart';
 import 'package:flutter/material.dart';
 
-class AppRoutes {
+import 'models/countriesData.dart';
+import 'routeNames.dart';
+import 'views/pages/countryDetail.dart';
+
+Route<dynamic> generateRoute(RouteSettings settings){
+
+  switch(settings.name){
+    case startUp:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow:  LandingPage()
+      );
+    case about:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: AboutPage()
+      );
+    case countries:
+      return _getPageRoute(
+          routeName: settings.name,
+          viewToShow:  CountriesPage()
+      );
+    case countryDetail:
+      var country = settings.arguments as Country;
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow:  CountryDetailPage(country: country)
+      );
+    default:
+      return _getPageRoute(
+          routeName: settings.name,
+          viewToShow:  LandingPage()
+      );
+  }
+
+}
+
+PageRoute _getPageRoute({String routeName, Widget viewToShow}){
+  return MaterialPageRoute(
+    settings: RouteSettings(
+      name: routeName
+    ),
+    builder: (_) => viewToShow
+  );
+}
+
+/*class AppRoutes {
   /// App start up (loading) page
   static const String startUp = '/';
 
@@ -33,9 +79,9 @@ class AppRoutes {
           builder: (BuildContext context) => CountriesPage(),
           settings: settings,
         );
-      /* TODO: add case for countryDetail
-      you can extract parameters from settings.arguments if necessary 
-      https://flutter.dev/docs/cookbook/navigation/navigate-with-arguments#alternatively-extract-the-arguments-using-ongenerateroute*/
+      *//* TODO: add case for countryDetail
+      you can extract parameters from settings.arguments if necessary
+      https://flutter.dev/docs/cookbook/navigation/navigate-with-arguments#alternatively-extract-the-arguments-using-ongenerateroute*//*
       default:
         return MaterialPageRoute(
           builder: (BuildContext context) => LandingPage(),
@@ -43,4 +89,4 @@ class AppRoutes {
         );
     }
   }
-}
+}*/
